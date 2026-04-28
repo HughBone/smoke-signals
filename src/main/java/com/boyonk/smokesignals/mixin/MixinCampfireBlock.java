@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinCampfireBlock {
 
 
-	@Inject(method = "spawnSmokeParticle", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "makeParticles", at = @At(value = "HEAD"), cancellable = true)
 	private static void smokesignals$spawnSmokeParticle(Level world, BlockPos pos, boolean isSignal, boolean lotsOfSmoke, CallbackInfo ci) {
 		BlockState below = world.getBlockState(pos.relative(Direction.DOWN));
 		ParticleOptions particle = SmokeSignals.getSmoke(below);
@@ -34,8 +34,8 @@ public class MixinCampfireBlock {
 		}
 	}
 
-	@Inject(method = "isSignalFireBaseBlock", at = @At("HEAD"), cancellable = true)
-	void smokesignals$isSignalFireBaseBlock(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(method = "isSmokeSource", at = @At("HEAD"), cancellable = true)
+	private void smokesignals$isSmokeSource(BlockState state, CallbackInfoReturnable<Boolean> cir) {
 		ParticleOptions particle = SmokeSignals.getSmoke(state);
 		cir.setReturnValue(particle != null && ((particle instanceof ColoredSmokeParticleEffect coloredSmoke && coloredSmoke.maxAge() >= 280) || particle == ParticleTypes.CAMPFIRE_SIGNAL_SMOKE));
 	}
