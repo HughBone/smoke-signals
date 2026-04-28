@@ -67,7 +67,7 @@ public class SmokeSignals implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		PayloadTypeRegistry.playS2C().register(SyncParticlesS2CPacket.ID, SyncParticlesS2CPacket.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(SyncParticlesS2CPacket.ID, SyncParticlesS2CPacket.CODEC);
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ServerPlayNetworking.send(handler.player, new SyncParticlesS2CPacket(blockToSmoke)));
 
 

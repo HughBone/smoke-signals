@@ -6,7 +6,7 @@ import com.boyonk.smokesignals.particle.ColoredSmokeParticleEffect;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.CampfireSmokeParticle;
 import net.minecraft.client.particle.Particle;
@@ -37,7 +37,7 @@ public class SmokeSignalsClient implements ClientModInitializer {
 			clientBlockToSmoke = null;
 		});
 
-		ParticleFactoryRegistry.getInstance().register(SmokeSignals.COLORED_CAMPFIRE_SMOKE, Factory::new);
+		ParticleProviderRegistry.getInstance().register(SmokeSignals.COLORED_CAMPFIRE_SMOKE, Factory::new);
 	}
 
 	public static class Factory implements ParticleProvider<ColoredSmokeParticleEffect> {
