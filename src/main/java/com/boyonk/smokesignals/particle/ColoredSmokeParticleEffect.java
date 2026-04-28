@@ -4,26 +4,26 @@ import com.boyonk.smokesignals.SmokeSignals;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.item.DyeColor;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
-public record ColoredSmokeParticleEffect(Vector3f color, int maxAge) implements ParticleEffect {
+public record ColoredSmokeParticleEffect(Vector3fc color, int maxAge) implements ParticleOptions {
 
 	public ColoredSmokeParticleEffect(DyeColor color, int maxAge) {
-		this(Vec3d.unpackRgb(color.getEntityColor()).toVector3f(), maxAge);
+		this(unpackRgb(color.getTextureDiffuseColor()), maxAge);
 	}
 
 
 	public static final MapCodec<ColoredSmokeParticleEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
 			instance.group(
-					Codecs.VECTOR_3F
+					ExtraCodecs.VECTOR3F
 							.fieldOf("color")
 							.forGetter(ColoredSmokeParticleEffect::color),
 					Codec.INT
@@ -32,9 +32,9 @@ public record ColoredSmokeParticleEffect(Vector3f color, int maxAge) implements 
 			).apply(instance, ColoredSmokeParticleEffect::new)
 	);
 
-	public static final PacketCodec<RegistryByteBuf, ColoredSmokeParticleEffect> PACKET_CODEC = PacketCodec.tuple(
-			PacketCodecs.VECTOR3F, ColoredSmokeParticleEffect::color,
-			PacketCodecs.INTEGER, ColoredSmokeParticleEffect::maxAge,
+	public static final StreamCodec<RegistryFriendlyByteBuf, ColoredSmokeParticleEffect> PACKET_CODEC = StreamCodec.composite(
+			ByteBufCodecs.VECTOR3F, ColoredSmokeParticleEffect::color,
+			ByteBufCodecs.INT, ColoredSmokeParticleEffect::maxAge,
 			ColoredSmokeParticleEffect::new
 	);
 
@@ -43,5 +43,7 @@ public record ColoredSmokeParticleEffect(Vector3f color, int maxAge) implements 
 		return SmokeSignals.COLORED_CAMPFIRE_SMOKE;
 	}
 
-
+	private static Vector3fc unpackRgb(int rgb) {
+		return new Vector3f(((rgb >> 16) & 0xFF) / 255.0f, ((rgb >> 8) & 0xFF) / 255.0f, (rgb & 0xFF) / 255.0f);
+	}
 }
