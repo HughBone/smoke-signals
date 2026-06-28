@@ -104,22 +104,9 @@ public class SmokeSignals implements ModInitializer {
 	private static Map<Block, ParticleOptions> createDefaultMap() {
 		Map<Block, ParticleOptions> map = new LinkedHashMap<>();
 		map.put(Blocks.HAY_BLOCK, ParticleTypes.CAMPFIRE_SIGNAL_SMOKE);
-		map.put(Blocks.WHITE_WOOL, new ColoredSmokeParticleEffect(DyeColor.WHITE, 280));
-		map.put(Blocks.ORANGE_WOOL, new ColoredSmokeParticleEffect(DyeColor.ORANGE, 280));
-		map.put(Blocks.MAGENTA_WOOL, new ColoredSmokeParticleEffect(DyeColor.MAGENTA, 280));
-		map.put(Blocks.LIGHT_BLUE_WOOL, new ColoredSmokeParticleEffect(DyeColor.LIGHT_BLUE, 280));
-		map.put(Blocks.YELLOW_WOOL, new ColoredSmokeParticleEffect(DyeColor.YELLOW, 280));
-		map.put(Blocks.LIME_WOOL, new ColoredSmokeParticleEffect(DyeColor.LIME, 280));
-		map.put(Blocks.PINK_WOOL, new ColoredSmokeParticleEffect(DyeColor.PINK, 280));
-		map.put(Blocks.GRAY_WOOL, new ColoredSmokeParticleEffect(DyeColor.GRAY, 280));
-		map.put(Blocks.LIGHT_GRAY_WOOL, new ColoredSmokeParticleEffect(DyeColor.LIGHT_GRAY, 280));
-		map.put(Blocks.CYAN_WOOL, new ColoredSmokeParticleEffect(DyeColor.CYAN, 280));
-		map.put(Blocks.PURPLE_WOOL, new ColoredSmokeParticleEffect(DyeColor.PURPLE, 280));
-		map.put(Blocks.BLUE_WOOL, new ColoredSmokeParticleEffect(DyeColor.BLUE, 280));
-		map.put(Blocks.BROWN_WOOL, new ColoredSmokeParticleEffect(DyeColor.BROWN, 280));
-		map.put(Blocks.GREEN_WOOL, new ColoredSmokeParticleEffect(DyeColor.GREEN, 280));
-		map.put(Blocks.RED_WOOL, new ColoredSmokeParticleEffect(DyeColor.RED, 280));
-		map.put(Blocks.BLACK_WOOL, new ColoredSmokeParticleEffect(DyeColor.BLACK, 280));
+		for (DyeColor color : DyeColor.values()) {
+			map.put(Blocks.WOOL.pick(color), new ColoredSmokeParticleEffect(color, 280));
+		}
 
 		return map;
 	}

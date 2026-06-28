@@ -28,6 +28,9 @@
     "smoke_signals.mixins.json"
   ],
   "depends": {
-
+    "minecraft": "*",
+    "fabricloader": ">=0.19.3",
+    "java": ">=25",
+    "fabric-api": "*"
   }
 }
